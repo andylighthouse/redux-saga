@@ -3,9 +3,10 @@ import { connect } from "react-redux";
 
 import {
   fetchStarWarsRequest,
-  fetchStarWarsPlanetsRequest,
   confirmationFetchRequest
 } from "./actions/starWars";
+
+import { fetchStarWarsPlanetsRequest } from "./actions/planets";
 import "./App.css";
 
 class App extends Component {
@@ -13,7 +14,7 @@ class App extends Component {
     open: false
   };
 
-  handleFetchClick = () => {
+  handleFetchPeopleClick = () => {
     this.props.fetchStarWarsRequest();
     this.setState({ open: true });
   };
@@ -22,7 +23,13 @@ class App extends Component {
     this.props.confirmationFetchRequest();
     this.setState({ open: false });
   };
+
+  handleFetchPlanetsClick = () => {
+    this.props.fetchStarWarsPlanetsRequest();
+    this.setState({ open: true });
+  };
   render() {
+    console.log(this.props.planets);
     return (
       <div>
         <div>
@@ -32,13 +39,19 @@ class App extends Component {
               <h4 key={i}>{person.name}</h4>
             ))}
           </div>
+          <div>
+            {this.props.planets.map((plant, i) => (
+              <h4 key={i}>{plant.name}</h4>
+            ))}
+          </div>
           <div
             style={!this.state.open ? { display: "none" } : {}}
             className="model"
           >
             <button onClick={this.handleConfirmationClick}>Confirm</button>
           </div>
-          <button onClick={this.handleFetchClick}>Load More</button>
+          <button onClick={this.handleFetchPeopleClick}>Load people</button>
+          <button onClick={this.handleFetchPlanetsClick}>Load planets</button>
         </div>
       </div>
     );
@@ -47,14 +60,15 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    people: state.starWars.people
+    people: state.starWars.people,
+    planets: state.planets.planets
   };
 };
 
 const bindActionsToDispatch = dispatch => ({
   fetchStarWarsRequest: () => dispatch(fetchStarWarsRequest()),
-  confirmationFetchRequest: () => dispatch(confirmationFetchRequest())
-  // fetchStarWarsPlanetsRequest: () => dispatch(fetchStarWarsPlanetsRequest())
+  confirmationFetchRequest: () => dispatch(confirmationFetchRequest()),
+  fetchStarWarsPlanetsRequest: () => dispatch(fetchStarWarsPlanetsRequest())
 });
 
 export default connect(
