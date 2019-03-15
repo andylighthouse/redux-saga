@@ -1,1 +1,2 @@
-Playing with redux saga
+Playing with Redux Saga and Generator Functions
+
